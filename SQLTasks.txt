@@ -1,0 +1,20 @@
+ -- Вывести список всех книг с именем их автора
+select Books.title, Authors.name from mydb.Books join mydb.Authors on Books.author_id = Authors.author_id;
+
+-- Найти все книги, выпущенные после 1 января 2020 года.
+select Books.title from mydb.Books where publication_date >'2020-01-01';
+
+-- Подсчитать общее количество книг, проданных в заказах.
+select sum(quantity) from mydb.Orders;
+
+--  Вывести 3 самые дорогие книги.
+select title, price from mydb.Books order by price desc limit 3;
+
+-- Найти авторов, чьи книги были заказаны больше 10 раз.
+SELECT Authors.name, Orders.book_id, SUM(Orders.quantity) AS book_order
+FROM mydb.Books
+JOIN mydb.Orders ON Orders.book_id = Books.book_id
+JOIN mydb.Authors ON Books.author_id = Authors.author_id
+GROUP BY Books.book_id
+HAVING SUM(Orders.quantity) > 10
+ORDER BY Books.book_id;
